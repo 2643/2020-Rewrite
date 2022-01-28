@@ -5,13 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-
-
-import frc.robot.commands.conveyor;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.conveyor.*;
 import frc.robot.subsystems.ConveyorBelt;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,7 +21,11 @@ import frc.robot.subsystems.ConveyorBelt;
  */
 public class RobotContainer {
   
+  public static Joystick opBoard = new Joystick(1);
+  public static JoystickButton forwardConveyor = new JoystickButton(opBoard, 11); 
+  public static JoystickButton reverseConveyor = new JoystickButton(opBoard, 10); 
   public static ConveyorBelt conveyorBelt = new ConveyorBelt();
+
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -38,7 +42,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    forwardConveyor.whileHeld(new forwardConv());
+    reverseConveyor.whileHeld(new revConv());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

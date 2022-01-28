@@ -27,4 +27,7 @@ public final class Constants {
 
     public static final int conveyorBeltMotorPort = 10;
 
+    public static final double convMotorSpeed = 0.3;
+    public static final double convRevMotorSpeed = -0.2;
+
 }
