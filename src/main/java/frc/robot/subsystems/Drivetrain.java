@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,20 +29,23 @@ public class Drivetrain extends SubsystemBase
   topleftMotor.getPIDController().setOutputRange(-0.5, 0.5);
   topleftMotor.getEncoder().setPosition(0);
   topleftMotor.getEncoder().setPositionConversionFactor(4096);
-  
+  bottomRightMotor.getPIDController().setReference(0, ControlType.kSmartMotion);
+
   bottomleftMotor.getPIDController().setP(CanSparkMotorP);
   bottomleftMotor.getPIDController().setI(CanSparkMotorI);
   bottomleftMotor.getPIDController().setD(CanSparkMotorD);
   bottomleftMotor.getPIDController().setOutputRange(-0.5, 0.5);
   bottomleftMotor.getEncoder().setPosition(0);
-  bottomleftMotor.getEncoder().setPositionConversionFactor(4096); 
-
+  bottomleftMotor.getEncoder().setPositionConversionFactor(4096);
+  bottomRightMotor.getPIDController().setReference(0, ControlType.kSmartMotion); 
+ 
   topRightMotor.getPIDController().setP(CanSparkMotorP);
   topRightMotor.getPIDController().setI(CanSparkMotorI);
   topRightMotor.getPIDController().setD(CanSparkMotorD);
   topRightMotor.getPIDController().setOutputRange(-0.5, 0.5);
   topRightMotor.getEncoder().setPosition(0);
-  topRightMotor.getEncoder().setPositionConversionFactor(4096); 
+  topRightMotor.getEncoder().setPositionConversionFactor(4096);
+  bottomRightMotor.getPIDController().setReference(0, ControlType.kSmartMotion); 
 
   bottomRightMotor.getPIDController().setP(CanSparkMotorP);
   bottomRightMotor.getPIDController().setI(CanSparkMotorI);
@@ -49,12 +53,23 @@ public class Drivetrain extends SubsystemBase
   bottomRightMotor.getPIDController().setOutputRange(-0.5, 0.5);
   bottomRightMotor.getEncoder().setPosition(0);
   bottomRightMotor.getEncoder().setPositionConversionFactor(4096); 
+  bottomRightMotor.getPIDController().setReference(0, ControlType.kSmartMotion);
+ 
+  topleftMotor.getPIDController().setReference(0, ControlType.kPosition);
+  bottomleftMotor.getPIDController().setReference(0, ControlType.kPosition);
+  topRightMotor.getPIDController().setReference(0, ControlType.kPosition);
+  bottomRightMotor.getPIDController().setReference(0, ControlType.kPosition);
   }
+
+  
   
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
   }
+
+ 
 }
 
