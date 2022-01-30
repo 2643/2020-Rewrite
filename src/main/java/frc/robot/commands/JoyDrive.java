@@ -5,24 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.RobotContainer;
 
-public class ItsAboutDriveItsAboutPower extends CommandBase {
-  private final Drivetrain m_drivetrain;
+public class JoyDrive extends CommandBase {
+
   /** Creates a new Joystick. */
-  public ItsAboutDriveItsAboutPower(Drivetrain drivetrain) {
-    m_drivetrain = drivetrain;
-    addRequirements(drivetrain);
+  public JoyDrive() 
+  {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(RobotContainer.runDrivetrainRun);
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() 
+  {
+    RobotContainer.runDrivetrainRun.resetEncoders();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() 
+  {
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override

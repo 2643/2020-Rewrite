@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ItsAboutDriveItsAboutPower;
+import frc.robot.commands.JoyDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,9 +28,8 @@ public class RobotContainer {
 
   public static final Drivetrain runDrivetrainRun = new Drivetrain();
 
-  public static final ItsAboutDriveItsAboutPower RUN_JOYSTICK_RUN = new ItsAboutDriveItsAboutPower(runDrivetrainRun);
-
   private final Joystick m_joystick = new Joystick(0);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
