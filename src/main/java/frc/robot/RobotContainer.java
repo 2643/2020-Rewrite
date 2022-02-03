@@ -33,15 +33,9 @@ public class RobotContainer {
 
   public static driverControl m_driverControl = new driverControl();
 
-  public static Joystick buttons = new Joystick(1);
-  public static JoystickButton button1 = new JoystickButton(buttons, 1);
-  public static JoystickButton button2 = new JoystickButton(buttons, 2);
-  public static JoystickButton button3 = new JoystickButton(buttons, 3);
-  public static JoystickButton button4 = new JoystickButton(buttons, 4);
-  public static JoystickButton button5 = new JoystickButton(buttons, 5);
-  public static JoystickButton button6 = new JoystickButton(buttons, 6);
-  public static JoystickButton button7 = new JoystickButton(buttons, 7);
-  public static JoystickButton button8 = new JoystickButton(buttons, 8);
+  public static Joystick driveStick = new Joystick(0);
+
+  
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

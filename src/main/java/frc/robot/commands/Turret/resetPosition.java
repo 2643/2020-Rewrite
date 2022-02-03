@@ -5,28 +5,29 @@
 package frc.robot.commands.Turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.TurretSubsystem;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class resetPosition extends CommandBase {
-  Timer timer = new Timer();
-  TimerTask timeForReset = new TimerTask() 
-    {
-      public void run()
-      {
-        if(RobotContainer.m_turret.turretLimitSwitchReflected())
-        {
-          RobotContainer.m_turret.stopTurret();
-          RobotContainer.m_turret.resetEncoder();
-        }
-        else
-        {
-          RobotContainer.m_turret.turretTurnLeft();
-        }
-      }
-    };
+  // Timer timer = new Timer();
+  // TimerTask timeForReset = new TimerTask() 
+  //   {
+  //     public void run()
+  //     {
+  //       if(RobotContainer.m_turret.turretLimitSwitchReflected())
+  //       {
+  //         RobotContainer.m_turret.stopTurret();
+  //         RobotContainer.m_turret.resetEncoder();
+  //       }
+  //       else
+  //       {
+  //         RobotContainer.m_turret.turretTurnLeft();
+  //       }
+  //     }
+  //   };
 
   /** Creates a new resetPosition. */    
   public resetPosition() {
@@ -72,7 +73,7 @@ public class resetPosition extends CommandBase {
   {
     RobotContainer.m_turret.stopTurret();
     RobotContainer.m_turret.resetEncoder();
-  }
+    CommandScheduler.getInstance().cancel(RobotContainer.m_resetPosition);  }
 
   // Returns true when the command should end.
   @Override

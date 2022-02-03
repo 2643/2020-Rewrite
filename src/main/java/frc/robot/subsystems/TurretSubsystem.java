@@ -136,6 +136,6 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic() 
   {
-    System.out.println(turretLimitSwitch.get());
+    //System.out.println(turretLimitSwitch.get());
   }
 }
