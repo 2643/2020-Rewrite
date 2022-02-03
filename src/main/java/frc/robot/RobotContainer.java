@@ -5,11 +5,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Turret.driverControl;
+import frc.robot.commands.Turret.resetPosition;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,7 +26,23 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
   public static TurretSubsystem m_turret = new TurretSubsystem();
+
+  public static resetPosition m_resetPosition = new resetPosition();
+
+  public static driverControl m_driverControl = new driverControl();
+
+  public static Joystick buttons = new Joystick(1);
+  public static JoystickButton button1 = new JoystickButton(buttons, 1);
+  public static JoystickButton button2 = new JoystickButton(buttons, 2);
+  public static JoystickButton button3 = new JoystickButton(buttons, 3);
+  public static JoystickButton button4 = new JoystickButton(buttons, 4);
+  public static JoystickButton button5 = new JoystickButton(buttons, 5);
+  public static JoystickButton button6 = new JoystickButton(buttons, 6);
+  public static JoystickButton button7 = new JoystickButton(buttons, 7);
+  public static JoystickButton button8 = new JoystickButton(buttons, 8);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
