@@ -28,7 +28,9 @@ public class RobotContainer {
 
   public static final Drivetrain runDrivetrainRun = new Drivetrain();
 
-  private final Joystick m_joystick = new Joystick(0);
+  public static final Joystick m_joystick = new Joystick(0);
+
+  public static final JoyDrive m_JoyDrive = new JoyDrive();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,7 +46,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() 
   {
-
+    
   }
 
   /**

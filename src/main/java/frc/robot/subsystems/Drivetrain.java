@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,8 +23,10 @@ public class Drivetrain extends SubsystemBase
   double MaxOutput = 0.75;
   double MinOutput = -0.75;
   double ConversionFactor = 4096;
-  double SmartMotionMaxAccel = 250;
-  double SmartMotionMaxVelocity = 125;
+  double SmartMotionLeftMaxAccel = 2000;
+  double SmartMotionRightMaxAccel = 2000;
+  double SmartMotionLeftMaxVelocity = 5900;
+  double SmartMotionRightMaxVelocity = 5800;
 
 
   CANSparkMax topleftMotor = new CANSparkMax(Constants.robotPortTopLeft, MotorType.kBrushless);
@@ -40,9 +43,10 @@ public class Drivetrain extends SubsystemBase
   topleftMotor.getPIDController().setOutputRange(MinOutput, MaxOutput);
   topleftMotor.getEncoder().setPosition(resetPosition);
   topleftMotor.getEncoder().setPositionConversionFactor(ConversionFactor);
-  topleftMotor.getPIDController().setReference(0, ControlType.kSmartMotion);
-  topleftMotor.getPIDController().setSmartMotionMaxAccel(SmartMotionMaxAccel, PIDSlot);
-  topleftMotor.getPIDController().setSmartMotionMaxVelocity(SmartMotionMaxVelocity, PIDSlot);
+  topleftMotor.getPIDController().setSmartMotionMaxAccel(SmartMotionLeftMaxVelocity, PIDSlot);
+  topleftMotor.getPIDController().setSmartMotionMaxVelocity(SmartMotionLeftMaxVelocity, PIDSlot);
+  topleftMotor.setIdleMode(IdleMode.kCoast);
+  topleftMotor.setInverted(true);
   
   bottomleftMotor.getEncoder().setPositionConversionFactor(ConversionFactor);
   bottomleftMotor.follow(topleftMotor);
@@ -53,9 +57,9 @@ public class Drivetrain extends SubsystemBase
   topRightMotor.getPIDController().setOutputRange(MinOutput, MaxOutput);
   topRightMotor.getEncoder().setPosition(resetPosition);
   topRightMotor.getEncoder().setPositionConversionFactor(ConversionFactor);
-  topRightMotor.getPIDController().setReference(0, ControlType.kSmartMotion);
-  topleftMotor.getPIDController().setSmartMotionMaxAccel(SmartMotionMaxAccel, PIDSlot);
-  topleftMotor.getPIDController().setSmartMotionMaxVelocity(SmartMotionMaxVelocity, PIDSlot); 
+  topRightMotor.getPIDController().setSmartMotionMaxAccel(SmartMotionRightMaxAccel, PIDSlot);
+  topRightMotor.getPIDController().setSmartMotionMaxVelocity(SmartMotionRightMaxVelocity, PIDSlot);
+  topleftMotor.setIdleMode(IdleMode.kCoast); 
 
   bottomRightMotor.getEncoder().setPositionConversionFactor(ConversionFactor); 
   bottomRightMotor.follow(topRightMotor);
@@ -63,18 +67,23 @@ public class Drivetrain extends SubsystemBase
 
   public void driveForward(double speed)
   {
-    topleftMotor.getPIDController().setReference(speed, ControlType.kDutyCycle);
-    topRightMotor.getPIDController().setReference(speed, ControlType.kDutyCycle);
+    topleftMotor.getPIDController().setReference(speed, ControlType.kSmartVelocity, PIDSlot);
+    topRightMotor.getPIDController().setReference(speed, ControlType.kSmartVelocity, PIDSlot);
   }
 
   public void turnLeft(double leftspeed)
   {
-    topleftMotor.getPIDController().setReference(leftspeed, ControlType.kDutyCycle);
+    topleftMotor.getPIDController().setReference(leftspeed * SmartMotionLeftMaxVelocity, ControlType.kSmartVelocity);
   }
 
   public void turnRight(double rightspeed)
   {
-    topRightMotor.getPIDController().setReference(rightspeed, ControlType.kDutyCycle);
+    topRightMotor.getPIDController().setReference(rightspeed * SmartMotionRightMaxVelocity , ControlType.kSmartVelocity, PIDSlot);
+  }
+  public void stopDrive()
+  {
+    topleftMotor.getPIDController().setReference(0, ControlType.kSmartVelocity, PIDSlot);
+    topRightMotor.getPIDController().setReference(0, ControlType.kSmartVelocity, PIDSlot);
   }
 
   public void resetEncoders()
@@ -84,13 +93,47 @@ public class Drivetrain extends SubsystemBase
     bottomRightMotor.getEncoder().setPosition(resetPosition);
     topRightMotor.getEncoder().setPosition(resetPosition);
   }
+
+  public void resetRightEncoder()
+  {
+    topRightMotor.getEncoder().setPosition(resetPosition);
+    bottomRightMotor.getEncoder().setPosition(resetPosition);
+  }
+
+  public void resetLeftEncoder()
+  {
+    topleftMotor.getEncoder().setPosition(resetPosition);
+    bottomleftMotor.getEncoder().setPosition(resetPosition);
+  }
+
+  // public void setLeftSmartMotionControl()
+  // {
+  //   topleftMotor.getPIDController().setReference(0, ControlType.kSmartVelocity);
+  // }
+
+  // public void setRightSmartMotionControl()
+  // {
+  //   topRightMotor.getPIDController().setReference(0, ControlType.kSmartVelocity);
+  // }
+  public double velocity()
+  {
+    return topRightMotor.getEncoder().getVelocity();
+  }
+  public double leftvelocity()
+  {
+    return topleftMotor.getEncoder().getVelocity();
+  }
+
+  
+  
   
   @Override
   public void periodic() 
   {
-    SmartDashboard.getNumber("Left Drive Position", topleftMotor.getEncoder().getPosition());
-    SmartDashboard.getNumber("Right Drive Position", topRightMotor.getEncoder().getPosition());
-    System.out.println("Top Left Encoder Position: " + topleftMotor.getEncoder().getPosition() + ", Bottom Left Encoder Position: " + bottomleftMotor.getEncoder().getPosition() + ", Top Right Encoder Position: " + topRightMotor.getEncoder().getPosition() + ", Bottom Right Encoder Position: " + bottomRightMotor.getEncoder().getPosition());
+    //SmartDashboard.getNumber("Left Drive Position", topleftMotor.getEncoder().getPosition());
+    //SmartDashboard.getNumber("Right Drive Position", topRightMotor.getEncoder().getPosition());
+   // System.out.println("Top Left Encoder Position: " + topleftMotor.getEncoder().getPosition() + ", Bottom Left Encoder Position: " + bottomleftMotor.getEncoder().getPosition() + ", Top Right Encoder Position: " + topRightMotor.getEncoder().getPosition() + ", Bottom Right Encoder Position: " + bottomRightMotor.getEncoder().getPosition());
+   //topRightMotor.getPIDController().setReference(0, ControlType.kSmartVelocity);
   }
 
  

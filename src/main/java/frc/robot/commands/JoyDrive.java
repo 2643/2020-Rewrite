@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class JoyDrive extends CommandBase {
@@ -28,7 +29,24 @@ public class JoyDrive extends CommandBase {
   @Override
   public void execute() 
   {
-    
+    //System.out.println(RobotContainer.m_joystick.getRawAxis(1));
+    if(Math.abs(RobotContainer.m_joystick.getRawAxis(1)) >= 0.05)
+    {
+      RobotContainer.runDrivetrainRun.turnLeft(RobotContainer.m_joystick.getRawAxis(1));
+    }
+    else
+    {
+      RobotContainer.runDrivetrainRun.turnLeft(0);
+    }
+
+    if(Math.abs(RobotContainer.m_joystick.getRawAxis(5)) >= 0.05)
+    {
+      RobotContainer.runDrivetrainRun.turnRight(RobotContainer.m_joystick.getRawAxis(5));
+    }
+    else
+    {
+      RobotContainer.runDrivetrainRun.turnRight(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
