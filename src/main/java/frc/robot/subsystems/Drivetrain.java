@@ -15,7 +15,10 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase 
 { 
-  double CanSparkMotorP = 0.0000002;
+  double CanSparkMotorP = 0.000002;
+  // tested P values
+  // 0.0000002 - weak PID
+  // 0.000002 - good PID
   double CanSparkMotorI= 0.0000000000;
   double CanSparkMotorD= 0.000000;
   int PIDSlot = 0;
