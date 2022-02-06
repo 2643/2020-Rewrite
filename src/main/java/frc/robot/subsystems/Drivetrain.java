@@ -25,8 +25,8 @@ public class Drivetrain extends SubsystemBase
   double ConversionFactor = 4096;
   double SmartMotionLeftMaxAccel = 2000;
   double SmartMotionRightMaxAccel = 2000;
-  double SmartMotionLeftMaxVelocity = 5900;
-  double SmartMotionRightMaxVelocity = 5800;
+  double SmartMotionLeftMaxVelocity = 5850;
+  double SmartMotionRightMaxVelocity = 5850;
 
 
   CANSparkMax topleftMotor = new CANSparkMax(Constants.robotPortTopLeft, MotorType.kBrushless);
@@ -59,7 +59,8 @@ public class Drivetrain extends SubsystemBase
   topRightMotor.getEncoder().setPositionConversionFactor(ConversionFactor);
   topRightMotor.getPIDController().setSmartMotionMaxAccel(SmartMotionRightMaxAccel, PIDSlot);
   topRightMotor.getPIDController().setSmartMotionMaxVelocity(SmartMotionRightMaxVelocity, PIDSlot);
-  topleftMotor.setIdleMode(IdleMode.kCoast); 
+  topRightMotor.setIdleMode(IdleMode.kCoast);
+  topRightMotor.setInverted(false);
 
   bottomRightMotor.getEncoder().setPositionConversionFactor(ConversionFactor); 
   bottomRightMotor.follow(topRightMotor);
