@@ -48,6 +48,7 @@ public class resetPosition extends CommandBase {
   {
     if(RobotContainer.m_turret.turretLimitSwitchReflected())
     {
+      
       RobotContainer.m_turret.stopTurret();
       RobotContainer.m_turret.resetEncoder();
     }
@@ -73,7 +74,8 @@ public class resetPosition extends CommandBase {
   {
     RobotContainer.m_turret.stopTurret();
     RobotContainer.m_turret.resetEncoder();
-    CommandScheduler.getInstance().cancel(RobotContainer.m_resetPosition);  }
+    CommandScheduler.getInstance().cancel(RobotContainer.m_resetPosition);  
+  }
 
   // Returns true when the command should end.
   @Override
