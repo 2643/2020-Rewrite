@@ -15,4 +15,7 @@ package frc.robot;
 public final class Constants {
     public static final int motorPort = 8;
     public static final double hoodSpeed = 0.07;
+
+    public static final int maxHoodLimitPort = 12;
+    public static final int minHoodLimitPort = 11;
 }

@@ -8,22 +8,25 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
 public class Hood extends SubsystemBase {
   private CANSparkMax motor = new CANSparkMax(Constants.motorPort, MotorType.kBrushless);
+  private DigitalInput maxPositionTrue = new DigitalInput(Constants.maxHoodLimitPort);
+  private DigitalInput minPositionTrue = new DigitalInput(Constants.minHoodLimitPort);
 
-  //sets PID variables
-  private static final double kP = 0.000000;
-  private static final double kI = 0;
+  //sets PID variables\
+  private static final double kP = 0.000001;
+  private static final double kI = 0.0;
   private static final double kD = 0;
 
   private static final double outputRange = 0;
 
   // max/min position that the hood can move to
-  private static final double maxPosition = 10000;
+  //private static final double maxPosition = 10000;
   private static final double minPosition = 0;
 
 
@@ -45,16 +48,24 @@ public class Hood extends SubsystemBase {
     motor.getPIDController().setReference(0, ControlType.kDutyCycle);
   }
 
+  public boolean atTopPos(){
+    return maxPositionTrue.get();
+  }
+
+  public boolean atBottomPos(){
+    return !(minPositionTrue.get());
+  }
+
   //moves the hood up
   public void moveUp() { 
-    if(motor.getEncoder().getPosition() < maxPosition){
+    if(!(atTopPos())){
       motor.getPIDController().setReference(Constants.hoodSpeed, ControlType.kDutyCycle);
     }
   }
 
   //moves the hood down
   public void moveDown(){
-    if(motor.getEncoder().getPosition() > minPosition){
+    if(!(atBottomPos())){
       motor.getPIDController().setReference(-1*(Constants.hoodSpeed), ControlType.kDutyCycle);
     }
 
