@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
@@ -22,16 +23,19 @@ public class TurretSubsystem extends SubsystemBase {
   int TurretPIDSlot = 0;
 
   int stopSpeed = 0;
-  double leftTurnSpeed = -0.1;
-  double rightTurnSpeed = 0.1;
+  double leftTurnSpeed = -1000;
+  double rightTurnSpeed = 1000;
   
   //Needs accurate values
   int LeftSoftLimit = -100000;
   int RightSoftLimit = 100000;
   //Needs testing
-  double TurretP = 0;
-  double TurretI = 0;
-  double TurretD = 0;
+  double TurretSmartVelocityP = 0.0001;
+  //Tested:
+    //0.00001 Doesn't move
+    //0.0001 Moves slowly
+  double TurretSmartVelocityI = 0;
+  double TurretSmartVelocityD = 0;
   
   double TurretFF = 0;
 
@@ -40,37 +44,34 @@ public class TurretSubsystem extends SubsystemBase {
   int ConversionFactor = 4096;
   int zeroPosition = 0;
 
-  //Needs testing
-  double SmartMotionP = 0;
-  double SmartMotionI = 0;
-  double SmartMotionD = 0;
+  //Needs experimenting
+  // double SmartMotionFF = 0;
   // double ClosedLoopError = 1;
 
-  //Needs experimenting
-  double SmartMotionFF = 0;
-
-  //Max v(t) and a(t) during Smart Motion
-  double SmartMotionMaxAcceleration = 50;
-  double SmartMotionMaxVelocity = 100;
+  //Max v(t) and a(t) during Smart Velocity
+  double SmartMotionMaxAcceleration = 250;
+  double SmartMotionMaxVelocity = 1000;
 
   //4096 represents 1 revolution
   int TurretPosition = 4096 * 1;
 
   //Motor is inverted so that when -speed will turn left and +speed will turn right
-  public  static final boolean InvertMotor = true;
+  boolean InvertMotor = true;
 
   /** Creates a new Turret. */
   public TurretSubsystem() 
   {
     //Motor is inverted so that when -speed will turn left and +speed will turn right
-    //turretCanSparkMax.getEncoder().setInverted(InvertMotor);
     //turretCanSparkMax.getPIDController().setFF(TurretFF);
-    turretCanSparkMax.getPIDController().setP(TurretP);
-    turretCanSparkMax.getPIDController().setI(TurretI);
-    turretCanSparkMax.getPIDController().setD(TurretD);
+    turretCanSparkMax.getEncoder().setPosition(zeroPosition);
+    turretCanSparkMax.getPIDController().setP(TurretSmartVelocityP);
+    turretCanSparkMax.getPIDController().setI(TurretSmartVelocityI);
+    turretCanSparkMax.getPIDController().setD(TurretSmartVelocityD);
 
     turretCanSparkMax.getPIDController().setOutputRange(TurretOutputMin, TurretOutputMax);
     turretCanSparkMax.getEncoder().setPositionConversionFactor(ConversionFactor);
+    turretCanSparkMax.setInverted(InvertMotor);
+    turretCanSparkMax.setIdleMode(IdleMode.kCoast);
 
     // turretCanSparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(ClosedLoopError, TurretPIDSlot);
     turretCanSparkMax.getPIDController().setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, TurretPIDSlot);
@@ -80,16 +81,16 @@ public class TurretSubsystem extends SubsystemBase {
 
     //turretCanSparkMax.getPIDController().setReference(0, ControlType.kSmartMotion);
   }
-
+//Position is not used
   public void turretCanTurn(double position)
   {
     if((LeftSoftLimit == turretCanSparkMax.getEncoder().getPosition()) || (RightSoftLimit == turretCanSparkMax.getEncoder().getPosition()))
     {
-      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kDutyCycle, TurretPIDSlot);
+      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartVelocity, TurretPIDSlot);
     }
     else
     {
-      turretCanSparkMax.getPIDController().setReference(position, ControlType.kSmartMotion, TurretPIDSlot);
+      turretCanSparkMax.getPIDController().setReference(position, ControlType.kSmartVelocity, TurretPIDSlot);
     }
   }
 
@@ -97,11 +98,11 @@ public class TurretSubsystem extends SubsystemBase {
   {
     if(LeftSoftLimit <= turretCanSparkMax.getEncoder().getPosition())
     {
-      turretCanSparkMax.getPIDController().setReference(-leftTurnSpeed, ControlType.kDutyCycle, TurretPIDSlot);
+      turretCanSparkMax.getPIDController().setReference(leftTurnSpeed, ControlType.kSmartVelocity, TurretPIDSlot);
     }
     else
     {
-      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kDutyCycle, TurretPIDSlot);
+      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartVelocity, TurretPIDSlot);
     }
   }
 
@@ -109,17 +110,17 @@ public class TurretSubsystem extends SubsystemBase {
   {
     if(RightSoftLimit >= turretCanSparkMax.getEncoder().getPosition())
     {
-      turretCanSparkMax.getPIDController().setReference(-rightTurnSpeed, ControlType.kDutyCycle, TurretPIDSlot);
+      turretCanSparkMax.getPIDController().setReference(rightTurnSpeed, ControlType.kSmartVelocity, TurretPIDSlot);
     }
     else
     {
-      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kDutyCycle, TurretPIDSlot);
+      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartVelocity, TurretPIDSlot);
     }
   }
 
   public void stopTurret()
   {
-    turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kDutyCycle);
+    turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartVelocity);
   }
 
   //returns true if limitswitch is hits the reflective tape and returns false otherwise
@@ -133,9 +134,20 @@ public class TurretSubsystem extends SubsystemBase {
     turretCanSparkMax.getEncoder().setPosition(zeroPosition);
   }
 
+  public double getPosition()
+  {
+    return turretCanSparkMax.getEncoder().getPosition();
+  }
+
+  public double getVelocity()
+  {
+    return turretCanSparkMax.getEncoder().getVelocity();
+  }
+
   @Override
   public void periodic() 
   {
-    //System.out.println(turretLimitSwitch.get());
+    //System.out.println(getVelocity());
+    //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
   }
 }
