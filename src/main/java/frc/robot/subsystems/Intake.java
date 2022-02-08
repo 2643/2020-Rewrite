@@ -46,4 +46,16 @@ public class Intake extends SubsystemBase
     isBallThere();
     // This method will be called once per scheduler run
   }
+
+  public void spinClockwise() {
+
+    intakeMotor.setInverted(false); 
+
+  }
+
+  public void spinCounterClockwise() {
+
+    intakeMotor.setInverted(true);
+
+  }
 }
