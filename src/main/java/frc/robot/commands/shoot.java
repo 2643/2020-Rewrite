@@ -22,7 +22,7 @@ public class shoot extends CommandBase {
   @Override
   public void execute() 
   {
-    
+    RobotContainer.m_shooter.setSpeed(1000);
   }
 
   // Called once the command ends or is interrupted.
