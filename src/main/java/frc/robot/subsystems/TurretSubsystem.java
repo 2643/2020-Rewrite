@@ -18,7 +18,7 @@ public class TurretSubsystem extends SubsystemBase {
   /** Creates a new TurretSubsystem. */
 
   CANSparkMax turretCanSparkMax = new CANSparkMax(Constants.TurretMotorPort, MotorType.kBrushless);
-  DigitalInput turretLimitSwitch = new DigitalInput(10);
+  DigitalInput turretLimitSwitch = new DigitalInput(Constants.turretLimitSwitchPort);
 
   int TurretPIDSlot = 0;
 
@@ -29,6 +29,8 @@ public class TurretSubsystem extends SubsystemBase {
   //Needs accurate values
   int LeftSoftLimit = -100000;
   int RightSoftLimit = 100000;
+  int leftHardLimit = -100000;
+  int rightHardLimit = 100000;
   //Needs testing
   double TurretSmartVelocityP = 0.0001;
   //Tested:
@@ -149,5 +151,6 @@ public class TurretSubsystem extends SubsystemBase {
   {
     //System.out.println(getVelocity());
     //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
+    System.out.println(getPosition());
   }
 }

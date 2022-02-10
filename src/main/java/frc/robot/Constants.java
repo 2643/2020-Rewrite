@@ -15,5 +15,5 @@ package frc.robot;
 public final class Constants 
 {
     public static final int TurretMotorPort = 7;
-    public static final int turretLimitSwitchPort = 0;
+    public static final int turretLimitSwitchPort = 10;
 }
