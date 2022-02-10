@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.shoot;
+import frc.robot.subsystems.ConveyertTest;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +26,10 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   public static Shooter m_shooter = new Shooter(); 
+
+  public static shoot cm_shoot = new shoot();
+
+  public static ConveyertTest m_cConveyertTest = new ConveyertTest();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
