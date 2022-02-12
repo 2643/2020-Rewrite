@@ -43,6 +43,7 @@ public class Shooter extends SubsystemBase {
     leftShooter.getPIDController().setReference(motorSpeed, ControlType.kVelocity);
   }
 
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
