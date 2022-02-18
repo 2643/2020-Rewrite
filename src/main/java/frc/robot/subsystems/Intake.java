@@ -11,39 +11,45 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public class Intake extends SubsystemBase
-{
+public class Intake extends SubsystemBase {
 
   /** Creates a new Intake. */
   TalonSRX intakeMotor = new TalonSRX (0);
   
   private static DigitalInput intakeBall = new DigitalInput (Constants.intakeBallChannel);
 
-  public Intake ()
-  {
+  public Intake () {
+
     intakeMotor.setNeutralMode (NeutralMode.Coast);
+
   }
 
-  public void setSpeed (double speed)
-  {
+  public void setSpeed (double speed) {
+
     intakeMotor.set (TalonSRXControlMode.PercentOutput, speed);
+
   }
 
-  public void isBallThere ()
-  {
-    if (intakeBall.get () == false)
-    {
+  public void isBallThere () {
+
+    if (intakeBall.get () == false) {
+
 	    Constants.intakingBall = true;
+
     }
-    else
-    {
+
+    else {
+
 	    Constants.intakingBall = false;
+      
     }
+
   }
 
-  @Override public void periodic ()
-  {
+  @Override public void periodic () {
+     
     isBallThere();
+    
     // This method will be called once per scheduler run
   }
 
