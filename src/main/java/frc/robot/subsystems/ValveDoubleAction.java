@@ -60,6 +60,7 @@ public class ValveDoubleAction
     }
 
     public void Extend() {
+      
       setFirst();
 
     /* This method pressurizes port + 1 */
@@ -85,8 +86,9 @@ public class ValveDoubleAction
 
     setSecond ();
 
+  /* This method closes the valve */
+
   }
   
-  /* This method closes the valve */
 
   }
