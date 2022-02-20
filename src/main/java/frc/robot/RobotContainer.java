@@ -8,9 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Turret.turretShoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +30,9 @@ public class RobotContainer {
 
   public static Joystick driveStick = new Joystick(0);
 
+  public static Joystick opBoard = new Joystick(1);
+  public static JoystickButton shootButton = new JoystickButton(opBoard, 1);
+
   
 
 
@@ -43,7 +48,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() 
+  {
+    shootButton.whileHeld(new turretShoot());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
