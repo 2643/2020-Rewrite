@@ -5,13 +5,15 @@
 package frc.robot.commands.Turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class driverControl extends CommandBase {
-  /** Creates a new driverControl. */
-  public driverControl() {
+public class turretShoot extends CommandBase {
+  /** Creates a new turretShoot. */
+  boolean turretReady = false;
+
+  public turretShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_turret);
   }
 
   // Called when the command is initially scheduled.
@@ -20,31 +22,36 @@ public class driverControl extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if(RobotContainer.driveStick.getPOV() == 270)
+  public void execute() 
+  {
+    if(Constants.visionTurretError <= 10 || Constants.visionTurretError >= -10)
     {
-      RobotContainer.m_turret.turretTurnLeft();
+      turretReady = true;
     }
-    else if(RobotContainer.driveStick.getPOV() == 90)
+    else if(Constants.visionTurretError > 10)
     {
-      RobotContainer.m_turret.turretTurnRight();
+      RobotContainer.m_turret.turretCanTurn(RobotContainer.m_turret.getPosition() - 20);
     }
-    else
+    else if(Constants.visionTurretError < -10)
     {
-      RobotContainer.m_turret.stopTurret();
+      RobotContainer.m_turret.turretCanTurn(RobotContainer.m_turret.getPosition() + 20);
     }
   }
-
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    RobotContainer.m_turret.stopTurret();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(turretReady)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 }

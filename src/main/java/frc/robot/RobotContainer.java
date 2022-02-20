@@ -8,12 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.Turret.driverControl;
-import frc.robot.commands.Turret.resetPosition;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,10 +25,6 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   public static TurretSubsystem m_turret = new TurretSubsystem();
-
-  public static resetPosition m_resetPosition = new resetPosition();
-
-  public static driverControl m_driverControl = new driverControl();
 
   public static Joystick driveStick = new Joystick(0);
 
