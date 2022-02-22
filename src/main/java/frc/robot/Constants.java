@@ -17,17 +17,11 @@ public final class Constants {
 
     public static final int conveyerIRSensorPort1 = 1;
     public static final int conveyerIRSensorPort2 = 2;
-    public static final int conveyerIRSensorPort3 = 3;
-    public static final int conveyerIRSensorPort4 = 4;
-    public static final int conveyerIRSensorPort5 = 5;
-    public static final int conveyerIRSensorPort6 = 6;
-    public static final int conveyerIRSensorPort7 = 7;
-    public static final int conveyerIRSensorPort8 = 8;
-    public static final int conveyerIRSensorPort9 = 9;
 
     public static final int conveyorBeltMotorPort = 10;
 
-    public static final double convMotorSpeed = 0.3;
-    public static final double convRevMotorSpeed = -0.2;
+    public static final double convMotorSpeed = 0;
+    public static final double convRevMotorSpeed = 0;
+    public static final double convAutoSpeed = 0;
 
 }

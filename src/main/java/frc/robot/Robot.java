@@ -52,6 +52,10 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     
     RobotContainer.conveyorBelt.updateBallsHeld();
+
+    // to look at
+
+    RobotContainer.conveyorBelt.printBallsHeld();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

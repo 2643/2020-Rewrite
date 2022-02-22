@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,28 +15,20 @@ import frc.robot.Constants;
 public class ConveyorBelt extends SubsystemBase {
   /** Creates a new ConveyerBelt. */
 
-  public static boolean isBall = false;
-  public static WPI_TalonSRX conveyorBeltMotor = new WPI_TalonSRX(Constants.conveyorBeltMotorPort);
+  public static CANSparkMax conveyorBeltMotor = new CANSparkMax(Constants.conveyorBeltMotorPort, MotorType.kBrushless);
   public static DigitalInput conviRSens1 = new DigitalInput(Constants.conveyerIRSensorPort1);
   public static DigitalInput conviRSens2 = new DigitalInput(Constants.conveyerIRSensorPort2);
-  public static DigitalInput conviRSens3 = new DigitalInput(Constants.conveyerIRSensorPort3);
-  public static DigitalInput conviRSens4 = new DigitalInput(Constants.conveyerIRSensorPort4);
-  public static DigitalInput conviRSens5 = new DigitalInput(Constants.conveyerIRSensorPort5);
-  public static DigitalInput conviRSens6 = new DigitalInput(Constants.conveyerIRSensorPort6);
-  public static DigitalInput conviRSens7 = new DigitalInput(Constants.conveyerIRSensorPort7);
-  public static DigitalInput conviRSens8 = new DigitalInput(Constants.conveyerIRSensorPort8);
-  public static DigitalInput conviRSens9 = new DigitalInput(Constants.conveyerIRSensorPort9);
-  public static DigitalInput[] conviRSens = {conviRSens1, conviRSens2, conviRSens3, conviRSens4, conviRSens5, conviRSens6, conviRSens7, conviRSens8, conviRSens9};
+  public static DigitalInput[] conviRSens = {conviRSens1, conviRSens2};
 
-  public static Boolean[] isThere = {false, false, false, false, false, false, false, false, false};
+  public static Boolean[] isThere = {false, false};
 
   public ConveyorBelt() {}
 
   public void setSpeed(double speed){
     conveyorBeltMotor.set(speed);
   }
-
-  public void updateBallsHeld()
+// FALSE = TRUE BECAUSE FALSE = IR BLOCKED
+  public void printBallsHeld()
   {
     
     for(int x = 0; x < isThere.length; x++)
@@ -49,22 +43,58 @@ public class ConveyorBelt extends SubsystemBase {
     }
     System.out.println("");
   }
+
+  public void updateBallsHeld()
+  {
+    for(int i = conviRSens.length-1; i > -1; i--)
+    {
+      if(conviRSens[i].get() == false)
+      {
+        isThere[i] = false;
+      }
+    }
+  }
+
+  public boolean isLeft()
+  {
+    for(int i = 0; i < isThere.length; i++)
+    {
+      if(isThere[i] == false)
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+// move ot back
+/* moved to intakeGo
+  public void intakePrep()
+  {
+    if(isLeft() == true && (isThere[1]== false && isThere[0] == true))
+    {
+      while(conviRSens[1].get() == false)
+      {
+        setSpeed(Constants.convRevMotorSpeed);
+      }
+    }
+  }
+  */
+  //goes until the front has at least SOMETHING
+  /* moved to intakeGo
+public void pushToFront()
+{
+  while(conviRSens[1].get() == true)
+  {
+    setSpeed(Constants.convIntakeSpeed);
+  }
+}
+*/
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    isBall = false;
-    for(int x = conviRSens.length-2; x >0 ; x--)
-    if(conviRSens[x].get() == false || conviRSens[x+1].get() == false)
-    {
-      isThere[x] = true;
-      isThere[x+1] = true;
-      isBall = true;
-    }
-    else
-    {
-      isThere[x] = false;
-      isThere[x] = false;
-    }
-
+    updateBallsHeld();
+    
   }
 }

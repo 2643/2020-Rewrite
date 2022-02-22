@@ -24,11 +24,17 @@ public class RobotContainer {
   public static Joystick opBoard = new Joystick(1);
   public static JoystickButton forwardConveyor = new JoystickButton(opBoard, 11); 
   public static JoystickButton reverseConveyor = new JoystickButton(opBoard, 10); 
+  // PUSH BALL TO THE SHOOTER POS
+  public static JoystickButton autoShoot = new JoystickButton(opBoard, 69); 
+  // intake funny
+  public static JoystickButton intakeGo = new JoystickButton(opBoard, 420 ); 
   public static ConveyorBelt conveyorBelt = new ConveyorBelt();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
