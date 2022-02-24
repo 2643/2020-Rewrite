@@ -23,5 +23,7 @@ public final class Constants {
     public static final double convMotorSpeed = 0;
     public static final double convRevMotorSpeed = 0;
     public static final double convAutoSpeed = 0;
+    public static final double convIntakeSpeed = 0;
+    public static final double convShooterSpeed = 0;
 
 }

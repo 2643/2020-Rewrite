@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -18,83 +17,173 @@ public class ConveyorBelt extends SubsystemBase {
   public static CANSparkMax conveyorBeltMotor = new CANSparkMax(Constants.conveyorBeltMotorPort, MotorType.kBrushless);
   public static DigitalInput conviRSens1 = new DigitalInput(Constants.conveyerIRSensorPort1);
   public static DigitalInput conviRSens2 = new DigitalInput(Constants.conveyerIRSensorPort2);
-  public static DigitalInput[] conviRSens = {conviRSens1, conviRSens2};
+  public static DigitalInput[] conviRSens = { conviRSens1, conviRSens2 };
 
-  public static Boolean[] isThere = {false, false};
+  public static int[] pos = { 0, 0 };
 
-  public ConveyorBelt() {}
+  public ConveyorBelt() {
+  }
 
-  public void setSpeed(double speed){
+  public void setSpeed(double speed) {
     conveyorBeltMotor.set(speed);
   }
-// FALSE = TRUE BECAUSE FALSE = IR BLOCKED
-  public void printBallsHeld()
-  {
-    
-    for(int x = 0; x < isThere.length; x++)
-    {
-      if(isThere[x] == false)
-      {
+
+  // FALSE = TRUE BECAUSE FALSE = IR BLOCKED
+  public void printBallsHeld() {
+
+    for (int x = 0; x < pos.length; x++) {
+      if (pos[x] == 1) {
         System.out.print("X");
-      }
-      else{
+      } else {
         System.out.print("O");
       }
     }
     System.out.println("");
   }
 
-  public void updateBallsHeld()
-  {
-    for(int i = conviRSens.length-1; i > -1; i--)
+  public String getState() {
+    updateBallsHeld();
+    if(pos[0] ==0 && pos[1] == 0)
     {
-      if(conviRSens[i].get() == false)
-      {
-        isThere[i] = false;
+      return "empty";
+    }
+    else if(pos[0] ==1 && pos[1] == 0)
+    {
+      return "firstonly";
+    }
+    else if(pos[0] ==0 && pos[1] == 1)
+    {
+      return "secondonly";
+    }
+    else if(pos[0] ==1 && pos[1] == 1)
+    {
+      return "full";
+    }
+    else
+    {
+      return "error";
+    }
+  }
+
+  public void updateBallsHeld() {
+    for (int i = conviRSens.length - 1; i > -1; i--) {
+      if (conviRSens[i].get() == false) {
+        pos[i] = 1;
+      } else {
+        pos[i] = 0;
       }
     }
   }
 
-  public boolean isLeft()
-  {
-    for(int i = 0; i < isThere.length; i++)
-    {
-      if(isThere[i] == false)
-      {
+  /*
+   * verifies state
+   *            pos1  pos2
+   * state 1 -  0     0
+   * state 2 -  1     0
+   * state 3 -  0     1
+   * state 4 -  1     1
+   */
+  public boolean equalTo(String inp) {
+    switch (inp) {
+      case "empty":
+        if (pos[0] == 0 && pos[1] == 0) {
+          return true;
+        }
+        break;
+      case "firstonly":
+        if (pos[0] == 1 && pos[1] == 0) {
+          return true;
+        }
+        break;
+      case "secondonly":
+        if (pos[0] == 0 && pos[1] == 1) {
+          return true;
+        }
+        break;
+      case "full":
+        if (pos[0] == 1 && pos[1] == 1) {
+          return true;
+        }
+        break;
+    }
+    return false;
+  }
+
+  public boolean isLeft() {
+    for (int i = 0; i < pos.length; i++) {
+      if (pos[i] == 1) {
         return true;
       }
     }
     return false;
   }
 
-// move ot back
-/* moved to intakeGo
-  public void intakePrep()
-  {
-    if(isLeft() == true && (isThere[1]== false && isThere[0] == true))
-    {
-      while(conviRSens[1].get() == false)
-      {
-        setSpeed(Constants.convRevMotorSpeed);
+  public boolean intakeCheck() {
+    // if it is full (full completley)
+    if (equalTo("full")) {
+      return false;
+    }
+    // until it goes from secondonly to firstonly in pos then no intake
+    else if (equalTo("secondonly")) {
+      while (conviRSens1.get() == true) {
+        setSpeed(Constants.convRevMotorSpeed); // sets in position to firstonly
       }
+      return true;
+    } else {
+      return true;
     }
   }
-  */
-  //goes until the front has at least SOMETHING
-  /* moved to intakeGo
-public void pushToFront()
-{
-  while(conviRSens[1].get() == true)
-  {
-    setSpeed(Constants.convIntakeSpeed);
+
+  public boolean shooterCheck() {
+    // if it is empty
+    if (equalTo("empty")) {
+      return false;
+    }
+    // cant shoot until from firstonly to secondonly positioning
+    else if (equalTo("firstonly")) {
+      while (conviRSens2.get() == true) {
+        setSpeed(Constants.convMotorSpeed);
+      }
+      return true;
+    } else {
+      return true;
+    }
   }
-}
-*/
+
+  public void turnOffConv()
+  {
+    setSpeed(0);
+  }
+  // move ot back
+  /*
+   * moved to intakeGo
+   * public void intakePrep()
+   * {
+   * if(isLeft() == true && (isThere[1]== false && isThere[0] == true))
+   * {
+   * while(conviRSens[1].get() == false)
+   * {
+   * setSpeed(Constants.convRevMotorSpeed);
+   * }
+   * }
+   * }
+   */
+  // goes until the front has at least SOMETHING
+  /*
+   * moved to intakeGo
+   * public void pushToFront()
+   * {
+   * while(conviRSens[1].get() == true)
+   * {
+   * setSpeed(Constants.convIntakeSpeed);
+   * }
+   * }
+   */
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateBallsHeld();
-    
+
   }
 }

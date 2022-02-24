@@ -24,10 +24,11 @@ public class RobotContainer {
   public static Joystick opBoard = new Joystick(1);
   public static JoystickButton forwardConveyor = new JoystickButton(opBoard, 11); 
   public static JoystickButton reverseConveyor = new JoystickButton(opBoard, 10); 
-  // PUSH BALL TO THE SHOOTER POS
-  public static JoystickButton autoShoot = new JoystickButton(opBoard, 69); 
-  // intake funny
-  public static JoystickButton intakeGo = new JoystickButton(opBoard, 420 ); 
+  // SHOOT TIME!!!
+  public static JoystickButton autoConveyorShoot = new JoystickButton(opBoard, 69); 
+  // intakes ball + puts it in pos to intake if need be
+  public static JoystickButton autoConveyorIntake = new JoystickButton(opBoard, 420 ); 
+
   public static ConveyorBelt conveyorBelt = new ConveyorBelt();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -50,8 +51,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    forwardConveyor.whileHeld(new forwardConv());
-    reverseConveyor.whileHeld(new revConv());
+    forwardConveyor.whileHeld(new conveyerForward());
+    reverseConveyor.whileHeld(new conveyorReverse());
   }
 
   /**

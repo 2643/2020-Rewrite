@@ -6,17 +6,14 @@ package frc.robot.commands.conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ConveyorBelt;
 
-public class autoShoot extends CommandBase {
-  /** Creates a new autoShoot. */
-
-  private boolean finished = false;
-
-  public autoShoot() {
+public class conveyerForward extends CommandBase {
+  /** Creates a new forwardConv. */
+  public conveyerForward() {
     // Use addRequirements() here to declare subsystem dependencies.
+    
     addRequirements(RobotContainer.conveyorBelt);
   }
 
@@ -27,25 +24,20 @@ public class autoShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // only goes if there are balls actually in conveyor
-    if(RobotContainer.conveyorBelt.isLeft() == true)
-    {
-      RobotContainer.conveyorBelt.setSpeed(Constants.convAutoSpeed);
-    }
+    RobotContainer.conveyorBelt.setSpeed(Constants.convMotorSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.conveyorBelt.setSpeed(0);
-    finished = false;
+    
+    RobotContainer.conveyorBelt.turnOffConv();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    finished = !RobotContainer.conveyorBelt.isLeft();
-    return finished;
+
+    return false;
   }
 }

@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class revConv extends CommandBase {
+public class conveyorReverse extends CommandBase {
   /** Creates a new revConv. */
-  public revConv() {
+  public conveyorReverse() {
     // Use addRequirements() here to declare subsystem dependencies.
     
     addRequirements(RobotContainer.conveyorBelt);
@@ -31,7 +31,7 @@ public class revConv extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     
-    RobotContainer.conveyorBelt.setSpeed(0);
+    RobotContainer.conveyorBelt.turnOffConv();
   }
 
   // Returns true when the command should end.
