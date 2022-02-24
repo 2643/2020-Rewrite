@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+<<<<<<< HEAD
 import frc.robot.commands.Turret.driverControl;
 import frc.robot.commands.Turret.resetPosition;
+=======
+>>>>>>> 0994c933122fb2ff0b8645ec32bf22cd9204512f
 import frc.robot.commands.Turret.turretShoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -30,12 +33,11 @@ public class RobotContainer {
 
   public static TurretSubsystem m_turret = new TurretSubsystem();
 
-  public static resetPosition m_resetPosition = new resetPosition();
-
-  public static driverControl m_driverControl = new driverControl();
-
   public static Joystick driveStick = new Joystick(0);
   public static JoystickButton turretTest = new JoystickButton(driveStick, 1);
+
+  public static Joystick opBoard = new Joystick(1);
+  public static JoystickButton shootButton = new JoystickButton(opBoard, 1);
 
   
 
@@ -54,7 +56,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() 
   {
+<<<<<<< HEAD
     turretTest.whenPressed(new turretShoot());
+=======
+    shootButton.whileHeld(new turretShoot());
+>>>>>>> 0994c933122fb2ff0b8645ec32bf22cd9204512f
   }
 
   /**

@@ -155,7 +155,11 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic() 
   {
+<<<<<<< HEAD
     System.out.println(getPosition());
+=======
+    //System.out.println(getVelocity());
+>>>>>>> 0994c933122fb2ff0b8645ec32bf22cd9204512f
     //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
   }
 }

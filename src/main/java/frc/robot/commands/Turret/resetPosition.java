@@ -5,11 +5,7 @@
 package frc.robot.commands.Turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.TurretSubsystem;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class resetPosition extends CommandBase {
 
@@ -47,9 +43,13 @@ public class resetPosition extends CommandBase {
   public void end(boolean interrupted) 
   {
     RobotContainer.m_turret.stopTurret();
+<<<<<<< HEAD
     RobotContainer.m_turret.turretPositionTurn(4096);
     RobotContainer.m_turret.resetEncoder();
     CommandScheduler.getInstance().cancel(RobotContainer.m_resetPosition);  
+=======
+    RobotContainer.m_turret.resetEncoder(); 
+>>>>>>> 0994c933122fb2ff0b8645ec32bf22cd9204512f
   }
 
   // Returns true when the command should end.
