@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -80,13 +81,11 @@ public class TurretSubsystem extends SubsystemBase {
     turretCanSparkMax.setInverted(InvertMotor);
     turretCanSparkMax.setIdleMode(IdleMode.kCoast);
 
-    turretCanSparkMax.getPIDController().setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, TurretPositionPIDSlot);
     turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(SmartMotionMaxAcceleration, TurretPositionPIDSlot);
     turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(SmartMotionMaxVelocity, TurretPositionPIDSlot);
 
-    turretCanSparkMax.getPIDController().setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, TurretVelocityPIDSlot);
-    turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(SmartMotionMaxAcceleration, TurretVelocityPIDSlot);
-    turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(SmartMotionMaxVelocity, TurretVelocityPIDSlot);
+    turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(SmartVelocityMaxAcceleration, TurretVelocityPIDSlot);
+    turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(SmartVelocityMaxVelocity, TurretVelocityPIDSlot);
     
   }
 //Position is not used
@@ -155,11 +154,8 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic() 
   {
-<<<<<<< HEAD
     System.out.println(getPosition());
-=======
     //System.out.println(getVelocity());
->>>>>>> 0994c933122fb2ff0b8645ec32bf22cd9204512f
     //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
   }
 }

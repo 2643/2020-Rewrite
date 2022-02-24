@@ -38,10 +38,7 @@ public final class Constants {
 
     public static final int TurretMotorPort = 7;
     public static final int turretLimitSwitchPort = 0;
-<<<<<<< HEAD
     public static final double defaultVisionTurretError = 0;
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision-movement");
-=======
     public static int visionTurretError = 0;
->>>>>>> 0994c933122fb2ff0b8645ec32bf22cd9204512f
 }

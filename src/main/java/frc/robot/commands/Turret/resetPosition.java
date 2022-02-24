@@ -37,19 +37,15 @@ public class resetPosition extends CommandBase {
     {
       RobotContainer.m_turret.turretTurnLeft();
     }
-  }v
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
     RobotContainer.m_turret.stopTurret();
-<<<<<<< HEAD
-    RobotContainer.m_turret.turretPositionTurn(4096);
+    RobotContainer.m_turret.turretCanTurn(4096);
     RobotContainer.m_turret.resetEncoder();
-    CommandScheduler.getInstance().cancel(RobotContainer.m_resetPosition);  
-=======
     RobotContainer.m_turret.resetEncoder(); 
->>>>>>> 0994c933122fb2ff0b8645ec32bf22cd9204512f
   }
 
   // Returns true when the command should end.
