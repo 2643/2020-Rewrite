@@ -33,6 +33,7 @@ public class hoodcm extends CommandBase {
     }
     else{
       RobotContainer.cm_Hood.stopMove();
+      //RobotContainer.cm_Hood.hoodPID(RobotContainer.cm_Hood.getPosition());
     }
     RobotContainer.cm_Hood.getPosition();
 
