@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Turret.driverControl;
 import frc.robot.commands.Turret.resetPosition;
+import frc.robot.commands.Turret.turretShoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,6 +35,7 @@ public class RobotContainer {
   public static driverControl m_driverControl = new driverControl();
 
   public static Joystick driveStick = new Joystick(0);
+  public static JoystickButton turretTest = new JoystickButton(driveStick, 1);
 
   
 
@@ -50,7 +52,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() 
+  {
+    turretTest.whenPressed(new turretShoot());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

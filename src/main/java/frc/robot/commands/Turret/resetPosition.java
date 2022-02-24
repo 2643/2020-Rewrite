@@ -12,22 +12,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class resetPosition extends CommandBase {
-  // Timer timer = new Timer();
-  // TimerTask timeForReset = new TimerTask() 
-  //   {
-  //     public void run()
-  //     {
-  //       if(RobotContainer.m_turret.turretLimitSwitchReflected())
-  //       {
-  //         RobotContainer.m_turret.stopTurret();
-  //         RobotContainer.m_turret.resetEncoder();
-  //       }
-  //       else
-  //       {
-  //         RobotContainer.m_turret.turretTurnLeft();
-  //       }
-  //     }
-  //   };
 
   /** Creates a new resetPosition. */    
   public resetPosition() {
@@ -46,6 +30,7 @@ public class resetPosition extends CommandBase {
   @Override
   public void execute() 
   {
+    //timer.schedule(timeForReset, 0L, 4000L);
     if(RobotContainer.m_turret.turretLimitSwitchReflected())
     {
       
@@ -56,23 +41,13 @@ public class resetPosition extends CommandBase {
     {
       RobotContainer.m_turret.turretTurnLeft();
     }
-  }
-  //   if(RobotContainer.m_turret.turretLimitSwitchReflected())
-  //   {
-  //     RobotContainer.m_turret.stopTurret();
-  //     RobotContainer.m_turret.resetEncoder();
-  //   }
-  //   else
-  //   {
-  //     RobotContainer.m_turret.turretTurnLeft();
-  //   }
-  // }
-
+  }v
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
     RobotContainer.m_turret.stopTurret();
+    RobotContainer.m_turret.turretPositionTurn(4096);
     RobotContainer.m_turret.resetEncoder();
     CommandScheduler.getInstance().cancel(RobotContainer.m_resetPosition);  
   }
