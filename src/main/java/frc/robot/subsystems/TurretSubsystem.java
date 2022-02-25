@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.text.Position;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -22,8 +24,8 @@ public class TurretSubsystem extends SubsystemBase {
   int TurretPositionPIDSlot = 1;
 
   int stopSpeed = 0;
-  double leftTurnSpeed = -1000;
-  double rightTurnSpeed = 1000;
+  double leftTurnSpeed = -0.1;
+  double rightTurnSpeed = 0.1;
   
   //Needs accurate values
   int LeftSoftLimit = -100000;
@@ -65,8 +67,7 @@ public class TurretSubsystem extends SubsystemBase {
   boolean InvertMotor = true;
 
   /** Creates a new Turret. */
-  public TurretSubsystem() 
-  {
+  public TurretSubsystem() {
     turretCanSparkMax.getEncoder().setPosition(zeroPosition);
     turretCanSparkMax.getPIDController().setP(TurretSmartVelocityP, TurretVelocityPIDSlot);
     turretCanSparkMax.getPIDController().setI(TurretSmartVelocityI, TurretVelocityPIDSlot);
@@ -89,73 +90,59 @@ public class TurretSubsystem extends SubsystemBase {
     
   }
 //Position is not used
-  public void turretCanTurn(double position)
-  {
-    if((LeftSoftLimit >= turretCanSparkMax.getEncoder().getPosition()) || (RightSoftLimit <= turretCanSparkMax.getEncoder().getPosition()))
-    {
+  public void turretCanTurn(double position)  {
+    if((LeftSoftLimit >= turretCanSparkMax.getEncoder().getPosition()) || (RightSoftLimit <= turretCanSparkMax.getEncoder().getPosition())){
       turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartMotion, TurretPositionPIDSlot);
     }
-    else
-    {
+    else{
       turretCanSparkMax.getPIDController().setReference(position, ControlType.kSmartMotion, TurretPositionPIDSlot);
     }
   }
 
-  public void turretTurnLeft()
-  {
-    if(LeftSoftLimit <= turretCanSparkMax.getEncoder().getPosition())
-    {
-      turretCanSparkMax.getPIDController().setReference(leftTurnSpeed, ControlType.kSmartVelocity, TurretVelocityPIDSlot);
+  public void turretTurnLeft()  {
+    if(LeftSoftLimit <= turretCanSparkMax.getEncoder().getPosition()){
+      turretCanSparkMax.getPIDController().setReference(leftTurnSpeed, ControlType.kDutyCycle, TurretVelocityPIDSlot);
     }
-    else
-    {
-      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartVelocity, TurretVelocityPIDSlot);
+    else{
+      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kDutyCycle, TurretVelocityPIDSlot);
     }
   }
 
-  public void turretTurnRight()
-  {
-    if(RightSoftLimit >= turretCanSparkMax.getEncoder().getPosition())
-    {
-      turretCanSparkMax.getPIDController().setReference(rightTurnSpeed, ControlType.kSmartVelocity, TurretVelocityPIDSlot);
+  public void turretTurnRight() {
+    if(RightSoftLimit >= turretCanSparkMax.getEncoder().getPosition()){
+      turretCanSparkMax.getPIDController().setReference(rightTurnSpeed, ControlType.kDutyCycle, TurretVelocityPIDSlot);
     }
-    else
-    {
-      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartVelocity, TurretVelocityPIDSlot);
+    else{
+      turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kDutyCycle, TurretVelocityPIDSlot);
     }
   }
 
-  public void stopTurret()
-  {
-    turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kSmartVelocity, TurretVelocityPIDSlot);
+  public void stopTurret() {
+    turretCanSparkMax.getPIDController().setReference(stopSpeed, ControlType.kDutyCycle, TurretVelocityPIDSlot);
   }
 
   //returns true if limitswitch is hits the reflective tape and returns false otherwise
-  public boolean turretLimitSwitchReflected()
-  {
+  public boolean turretLimitSwitchReflected() {
     return !turretLimitSwitch.get();
   }
 
-  public void resetEncoder()
-  {
+  public void resetEncoder()  {
     turretCanSparkMax.getEncoder().setPosition(zeroPosition);
   }
 
-  public double getPosition()
-  {
+  public double getPosition() {
     return turretCanSparkMax.getEncoder().getPosition();
   }
 
-  public double getVelocity()
-  {
+  public double getVelocity() {
     return turretCanSparkMax.getEncoder().getVelocity();
   }
 
   @Override
-  public void periodic() 
-  {
-    System.out.println(getPosition());
+  public void periodic()  {
+    //System.out.println(getPosition());
     //System.out.println(getVelocity());
     //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
+    System.out.println(" Pos: " + getPosition() + " Error:" + (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError));
   }
 }
