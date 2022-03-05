@@ -5,7 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -41,4 +44,7 @@ public final class Constants {
     public static final double defaultVisionTurretError = 0;
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision-movement");
     public static int visionTurretError = 0;
+    static ShuffleboardTab TalonFXTab = Shuffleboard.getTab("TalonFX");
+    public static NetworkTableEntry wantedPositionTurret = TalonFXTab.add("Wanted Position", 0).getEntry();
+
 }

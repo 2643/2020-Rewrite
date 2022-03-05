@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class resetPosition extends CommandBase {
+  double pos;
 
   /** Creates a new resetPosition. */    
   public resetPosition() {
@@ -20,44 +21,33 @@ public class resetPosition extends CommandBase {
   public void initialize() 
   {
     //timer.schedule(timeForReset, 0L, 4000L);
+    pos = RobotContainer.m_turret.getPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    //timer.schedule(timeForReset, 0L, 4000L);
-    if(RobotContainer.m_turret.turretLimitSwitchReflected())
-    {
-      
-      RobotContainer.m_turret.stopTurret();
-      RobotContainer.m_turret.resetEncoder();
-    }
-    else
-    {
-      RobotContainer.m_turret.turretTurnLeft();
+    if(!RobotContainer.m_turret.turretLimitSwitchReflected()) {
+      pos -= 20;
+      RobotContainer.m_turret.turretCanTurn(pos);
     }
   }
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
-    RobotContainer.m_turret.stopTurret();
+  public void end(boolean interrupted) {
     RobotContainer.m_turret.turretCanTurn(4096);
     RobotContainer.m_turret.resetEncoder();
-    RobotContainer.m_turret.resetEncoder(); 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() 
   {
-    if(RobotContainer.m_turret.turretLimitSwitchReflected())
-    {
+    if(RobotContainer.m_turret.turretLimitSwitchReflected()) {
       return true;
     }
-    else
-    {
+    else {
       return false;
     }
   }

@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     //CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new SequentialCommandGroup(new resetPosition(), new driverControl()));
-    //CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new driverControl());
+    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new driverControl());
 
   }
 

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class driverControl extends CommandBase {
+  public static double pos;
   /** Creates a new driverControl. */
   public driverControl() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -16,22 +17,20 @@ public class driverControl extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    pos = RobotContainer.m_turret.getPosition();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotContainer.driveStick.getPOV() == 270)
-    {
-      RobotContainer.m_turret.turretTurnLeft();
+    if(RobotContainer.driveStick.getPOV() == 270) {
+      pos -= 200;
+      RobotContainer.m_turret.turretCanTurn(pos);
     }
-    else if(RobotContainer.driveStick.getPOV() == 90)
-    {
-      RobotContainer.m_turret.turretTurnRight();
-    }
-    else
-    {
-      RobotContainer.m_turret.stopTurret();
+    else if(RobotContainer.driveStick.getPOV() == 90) {
+      pos += 200;
+      RobotContainer.m_turret.turretCanTurn(pos);
     }
   }
 
@@ -39,7 +38,6 @@ public class driverControl extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_turret.stopTurret();
   }
 
   // Returns true when the command should end.
