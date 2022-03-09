@@ -188,7 +188,7 @@ public class TurretSubsystem extends SubsystemBase {
     turretCanSparkMax.getPIDController().setI(IValue, TurretPositionPIDSlot);
     turretCanSparkMax.getPIDController().setD(DValue, TurretPositionPIDSlot);
     positionTurret.setDouble(getPosition());
-    Constants.wantedPositionTurret.setDouble(driverControl.pos);
+    Constants.wantedPositionTurret.setDouble(driverControl.posDriverControl);
     //P is 0.00001: Doesn't move
     //P is 0.0001:Moves but oscilates
     //P is 0.00002: Moves 
