@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class driverControl extends CommandBase {
-  private static double pos;
+  public static double posDriverControl;
   private static double target;
   /** Creates a new driverControl. */
   public driverControl() {
@@ -19,20 +19,20 @@ public class driverControl extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pos = RobotContainer.m_turret.getPosition();
+    posDriverControl = RobotContainer.m_turret.getPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pos = RobotContainer.m_turret.getPosition();
+    posDriverControl = RobotContainer.m_turret.getPosition();
 
     if(RobotContainer.driveStick.getPOV() == 270) {
-      target = pos - 200;
+      target = posDriverControl - 200;
       RobotContainer.m_turret.turretCanTurn(target);
     }
     else if(RobotContainer.driveStick.getPOV() == 90) {
-      target = pos + 200;
+      target = posDriverControl + 200;
       RobotContainer.m_turret.turretCanTurn(target);
     }
     else
