@@ -14,6 +14,7 @@ public class turretShoot extends CommandBase {
   boolean turretReady;
   double error;
   double pos;
+  double target;
 
   public turretShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,18 +31,19 @@ public class turretShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    pos = RobotContainer.m_turret.getPosition();
+
     error = (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError);
     if(error <= 1 && error >= -1){
       //turretReady = true;
-      //RobotContainer.m_turret.stopTurret();
     }
     else if(error > 1){
-      //RobotContainer.m_turret.turretTurnLeft();
-      RobotContainer.m_turret.turretCanTurn(pos - 20);
+      target = pos - 200;
+      RobotContainer.m_turret.turretCanTurn(target);
     }
     else if(error < -1){
-      //RobotContainer.m_turret.turretTurnRight();
-      RobotContainer.m_turret.turretCanTurn(pos + 20);
+      target = pos + 200;
+      RobotContainer.m_turret.turretCanTurn(target);
     }
     System.out.println("Error: " + error + " Pos:" + RobotContainer.m_turret.getPosition());
 

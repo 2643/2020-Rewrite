@@ -171,6 +171,9 @@ public class TurretSubsystem extends SubsystemBase {
   public double getVelocity() {
     return turretCanSparkMax.getEncoder().getVelocity();
   }
+  public void setEncoder(double pos)  {
+    turretCanSparkMax.getEncoder().setPosition(pos);
+  }
 
   @Override
   public void periodic()  {
