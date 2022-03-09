@@ -192,5 +192,8 @@ public class TurretSubsystem extends SubsystemBase {
     //P is 0.000025: Moves with less oscilation
     //P is 0.000022: Very little oscilation
     //P is 0.0000211: Much less oscilation but not exact.
+    //p is 0.0000221: closer
+    //p 0.0000341 works and shaz is a bot
+    // d 0.00019 better and add deadband
   }
 }

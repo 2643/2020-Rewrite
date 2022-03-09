@@ -45,6 +45,7 @@ public class resetPosition extends CommandBase {
   public boolean isFinished() 
   {
     if(RobotContainer.m_turret.turretLimitSwitchReflected()) {
+      System.out.println("recal");
       return true;
     }
     else {
