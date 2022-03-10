@@ -38,11 +38,11 @@ public class turretShoot extends CommandBase {
       //turretReady = true;
     }
     else if(error > 1){
-      target = pos - 200;
+      target = pos - 2500;
       RobotContainer.m_turret.turretCanTurn(target);
     }
     else if(error < -1){
-      target = pos + 200;
+      target = pos + 2500;
       RobotContainer.m_turret.turretCanTurn(target);
     }
     System.out.println("Error: " + error + " Pos:" + RobotContainer.m_turret.getPosition());

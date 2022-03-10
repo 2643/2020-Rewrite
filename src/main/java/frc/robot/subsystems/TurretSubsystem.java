@@ -66,8 +66,8 @@ public class TurretSubsystem extends SubsystemBase {
   int zeroPosition = 0;
 
   //Max v(t) and a(t) during Smart Velocity
-  double SmartVelocityMaxAcceleration = 250;
-  double SmartVelocityMaxVelocity = 1000;
+  double SmartVelocityMaxAcceleration = 750;
+  double SmartVelocityMaxVelocity = 2000;
 
   double SmartMotionMaxAcceleration = 1000;
   double SmartMotionMaxVelocity = 1500;
@@ -99,7 +99,7 @@ public class TurretSubsystem extends SubsystemBase {
     turretCanSparkMax.getPIDController().setOutputRange(TurretOutputMin, TurretOutputMax);
     turretCanSparkMax.getEncoder().setPositionConversionFactor(ConversionFactor);
     turretCanSparkMax.setInverted(InvertMotor);
-    turretCanSparkMax.setIdleMode(IdleMode.kCoast);
+    turretCanSparkMax.setIdleMode(IdleMode.kBrake);
 
     turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(SmartMotionMaxAcceleration, TurretPositionPIDSlot);
     turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(SmartMotionMaxVelocity, TurretPositionPIDSlot);
@@ -111,25 +111,13 @@ public class TurretSubsystem extends SubsystemBase {
   }
 //Position is not used
   public void turretCanTurn(double positionValue)  {
-    if(positionValue > 0) {
-      if(RightSoftLimit <= getPosition()) {
-        if(RightHardLimit <= getPosition()) {
-          turretCanSparkMax.disable();
-        }
-      }
-      else {
-        turretCanSparkMax.getPIDController().setReference(positionValue, ControlType.kSmartMotion, TurretPositionPIDSlot);
+    if(RightSoftLimit <= getPosition() || LeftSoftLimit >= getPosition()) {
+      if(RightHardLimit <= getPosition() || LeftHardLimit >= getPosition()) {
+        turretCanSparkMax.disable();
       }
     }
-    else if(positionValue < 0) {
-      if(LeftSoftLimit >= getPosition()) {
-        if(LeftHardLimit >= getPosition()) {
-          turretCanSparkMax.disable();
-        }
-      }
-      else {
-        turretCanSparkMax.getPIDController().setReference(positionValue, ControlType.kSmartMotion, TurretPositionPIDSlot);
-      }
+    else {
+      turretCanSparkMax.getPIDController().setReference(positionValue, ControlType.kSmartMotion, TurretPositionPIDSlot);
     }
   }
 
@@ -178,10 +166,10 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic()  {
     //System.out.println(getPosition());
-    //System.out.println(getVelocity());
+    System.out.println(getVelocity());
     //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
-    System.out.println(" Pos: " + getPosition() + " Error:" + (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError));
-    double PValue = ShuffleBoardData.getDouble(0.00005);
+    //System.out.println(" Pos: " + getPosition() + " Error:" + (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError));
+    double PValue = ShuffleBoardData.getDouble(0.0001);
     double IValue = lol1.getDouble(0.00000);
     double DValue = lol2.getDouble(0);
     turretCanSparkMax.getPIDController().setP(PValue, TurretPositionPIDSlot);
@@ -196,7 +184,7 @@ public class TurretSubsystem extends SubsystemBase {
     //P is 0.000022: Very little oscilation
     //P is 0.0000211: Much less oscilation but not exact.
     //p is 0.0000221: closer
-    //p 0.0000341 works and shaz is a bot
-    // d 0.00019 better and add deadband
+    //p 0.0000341 works
+    //P is 0.0001 works well. May need more increase
   }
 }

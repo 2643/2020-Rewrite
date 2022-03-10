@@ -9,6 +9,7 @@ import frc.robot.RobotContainer;
 
 public class resetPosition extends CommandBase {
   double pos;
+  double target;
 
   /** Creates a new resetPosition. */    
   public resetPosition() {
@@ -21,23 +22,25 @@ public class resetPosition extends CommandBase {
   public void initialize() 
   {
     //timer.schedule(timeForReset, 0L, 4000L);
-    pos = RobotContainer.m_turret.getPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
+    pos = RobotContainer.m_turret.getPosition();
+
     if(!RobotContainer.m_turret.turretLimitSwitchReflected()) {
-      pos -= 20;
-      RobotContainer.m_turret.turretCanTurn(pos);
+      target = pos - 3500;
+      RobotContainer.m_turret.turretCanTurn(target);
     }
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_turret.turretCanTurn(4096);
-    RobotContainer.m_turret.resetEncoder();
+    RobotContainer.m_turret.setEncoder(0);
+    RobotContainer.m_turret.turretCanTurn(0);
+    //RobotContainer.m_turret.turretCanTurn(4096);
   }
 
   // Returns true when the command should end.
@@ -45,7 +48,6 @@ public class resetPosition extends CommandBase {
   public boolean isFinished() 
   {
     if(RobotContainer.m_turret.turretLimitSwitchReflected()) {
-      System.out.println("recal");
       return true;
     }
     else {

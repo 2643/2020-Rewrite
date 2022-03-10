@@ -68,10 +68,12 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new SequentialCommandGroup(new resetPosition(), new driverControl()));
-    if(!resetTurretDone)
-    {
+    if(!resetTurretDone) {
       CommandScheduler.getInstance().schedule(new resetPosition());
       resetTurretDone = true;
+    }
+    else {
+      CommandScheduler.getInstance().schedule(true, new driverControl());
     }
 
 
@@ -97,10 +99,12 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    if(!resetTurretDone)
-    {
+    if(!resetTurretDone) {
       CommandScheduler.getInstance().schedule(new resetPosition());
       resetTurretDone = true;
+    }
+    else {
+      CommandScheduler.getInstance().schedule(true, new driverControl());
     }
     //CommandScheduler.getInstance().schedule(true, RobotContainer.m_resetPosition);
   }
