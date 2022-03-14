@@ -6,6 +6,7 @@ package frc.robot.commands.Turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.TurretSubsystem;
 
@@ -14,7 +15,8 @@ public class turretShoot extends CommandBase {
   boolean turretReady;
   double error;
   double pos;
-  double target;
+  double gain = 183516;
+  public static double target;
 
   public turretShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,6 +28,7 @@ public class turretShoot extends CommandBase {
   public void initialize() {
     pos = RobotContainer.m_turret.getPosition();
     turretReady = false;
+    Robot.canDriverControl = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,36 +36,38 @@ public class turretShoot extends CommandBase {
   public void execute() {
     pos = RobotContainer.m_turret.getPosition();
 
-    error = (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError);
-    if(error <= 1 && error >= -1){
-      //turretReady = true;
+    error = ((double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError))*183516;
+    if(error <= 5 && error >= -5){
+      turretReady = true;
     }
-    else if(error > 1){
+    else if(error > 5){
       target = pos - 2500;
       RobotContainer.m_turret.turretCanTurn(target);
     }
-    else if(error < -1){
+    else if(error < -5){
       target = pos + 2500;
       RobotContainer.m_turret.turretCanTurn(target);
     }
-    System.out.println("Error: " + error + " Pos:" + RobotContainer.m_turret.getPosition());
-
+    System.out.println("Error: " + error + " Pos:" + RobotContainer.m_turret.getPosition() + "Ready: " + turretReady);
   }
 
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Robot.canDriverControl = true;
+    double posRN = RobotContainer.m_turret.getPosition();
+    RobotContainer.m_turret.turretCanTurn(posRN);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if(turretReady){
-    //   return true;
-    // }
-    // else{
-    //   return false;
-    // }
-    return false;
+    if(turretReady){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 }

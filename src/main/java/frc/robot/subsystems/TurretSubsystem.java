@@ -4,29 +4,19 @@
 
 package frc.robot.subsystems;
 
-import javax.swing.text.Position;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.fasterxml.jackson.databind.deser.ValueInstantiator.Gettable;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTableValue;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.Turret.*;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class TurretSubsystem extends SubsystemBase {
   /** Creates a new TurretSubsystem. */
@@ -166,9 +156,9 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic()  {
     //System.out.println(getPosition());
-    System.out.println(getVelocity());
+    //System.out.println(getVelocity());
     //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
-    //System.out.println(" Pos: " + getPosition() + " Error:" + (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError));
+    System.out.println(" Pos: " + getPosition() + " Error:" + (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError) + "PIDError" + (getPosition()-turretShoot.target));
     double PValue = ShuffleBoardData.getDouble(0.0001);
     double IValue = lol1.getDouble(0.00000);
     double DValue = lol2.getDouble(0);
@@ -186,5 +176,6 @@ public class TurretSubsystem extends SubsystemBase {
     //p is 0.0000221: closer
     //p 0.0000341 works
     //P is 0.0001 works well. May need more increase
+    //P is 0.0000341 and D is 0.00019
   }
 }

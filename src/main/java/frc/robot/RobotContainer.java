@@ -50,7 +50,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    turretTest.whileHeld(new turretShoot());
+    //turretTest.whenPressed(new turretShoot(), false);
+    turretTest.whenPressed(new turretShoot());
   }
 
   /**

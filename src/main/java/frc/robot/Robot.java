@@ -23,6 +23,7 @@ import frc.robot.commands.Turret.resetPosition;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private boolean resetTurretDone = false;
+  public static boolean canDriverControl = true; 
   private RobotContainer m_robotContainer;
 
   /**
@@ -51,7 +52,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new driverControl());
+    //CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new driverControl());
 
   }
 
@@ -68,13 +69,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new SequentialCommandGroup(new resetPosition(), new driverControl()));
-    if(!resetTurretDone) {
-      CommandScheduler.getInstance().schedule(new resetPosition());
-      resetTurretDone = true;
-    }
-    else {
-      CommandScheduler.getInstance().schedule(true, new driverControl());
-    }
+    // if(!resetTurretDone) {
+    //   CommandScheduler.getInstance().schedule(new resetPosition());
+    //   resetTurretDone = true;
+    // }
+    // else {
+    //   CommandScheduler.getInstance().schedule(true, new driverControl());
+    // }
 
 
     // schedule the autonomous command (example)
@@ -98,14 +99,12 @@ public class Robot extends TimedRobot {
     System.out.println("TeleopInit");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    }
-    if(!resetTurretDone) {
-      CommandScheduler.getInstance().schedule(new resetPosition());
-      resetTurretDone = true;
-    }
-    else {
-      CommandScheduler.getInstance().schedule(true, new driverControl());
-    }
+    // }
+    // if(!resetTurretDone) {
+    //   CommandScheduler.getInstance().schedule(new resetPosition());
+    //   resetTurretDone = true;
+     }
+    
     //CommandScheduler.getInstance().schedule(true, RobotContainer.m_resetPosition);
   }
 
@@ -114,6 +113,12 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() 
   {
     //CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_turret, new driverControl());
+    // if(canDriverControl) {
+    //   CommandScheduler.getInstance().schedule(true, new driverControl());
+    // }
+    // else if(RobotContainer.turretTest.get()){
+    //   canDriverControl = false;
+    // }
   }
 
   @Override

@@ -6,6 +6,7 @@ package frc.robot.commands.Turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants;
 
 public class driverControl extends CommandBase {
   public static double posDriverControl;
@@ -35,8 +36,7 @@ public class driverControl extends CommandBase {
       target = posDriverControl + 3500;
       RobotContainer.m_turret.turretCanTurn(target);
     }
-    else
-    {
+    else {
       RobotContainer.m_turret.setEncoder(target);
     }
   }

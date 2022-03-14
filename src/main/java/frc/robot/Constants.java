@@ -43,8 +43,8 @@ public final class Constants {
     public static final int turretLimitSwitchPort = 0;
     public static final double defaultVisionTurretError = 0;
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision-movement");
-    public static int visionTurretError = 0;
+    public static int visionTurretError = 10;
     static ShuffleboardTab TalonFXTab = Shuffleboard.getTab("TalonFX");
     public static NetworkTableEntry wantedPositionTurret = TalonFXTab.add("Wanted Position", 0).getEntry();
-
+    //public static double turretPosition = 0;
 }
