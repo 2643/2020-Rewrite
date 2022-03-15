@@ -44,7 +44,9 @@ public final class Constants {
     public static final double defaultVisionTurretError = 0;
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision-movement");
     public static int visionTurretError = 10;
-    static ShuffleboardTab TalonFXTab = Shuffleboard.getTab("TalonFX");
+    public static ShuffleboardTab TalonFXTab = Shuffleboard.getTab("TalonFX");
     public static NetworkTableEntry wantedPositionTurret = TalonFXTab.add("Wanted Position", 0).getEntry();
+    public static NetworkTableEntry pidError =  TalonFXTab.add("PID Error", 0).getEntry();
+    public static NetworkTableEntry degrees = TalonFXTab.add("Degrees", 0).getEntry();
     //public static double turretPosition = 0;
 }

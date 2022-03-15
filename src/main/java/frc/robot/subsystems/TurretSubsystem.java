@@ -72,12 +72,17 @@ public class TurretSubsystem extends SubsystemBase {
   ShuffleboardTab TalonFXTab = Shuffleboard.getTab("TalonFX");
   NetworkTableEntry positionTurret = TalonFXTab.add("Position Value", 0).getEntry();
   NetworkTableEntry lol1 = TalonFXTab.add("I Value", 0.000000).getEntry();
-  NetworkTableEntry lol2 = TalonFXTab.add("D Value", 0.000000).getEntry();
+  NetworkTableEntry lol2 = TalonFXTab.add("D Value", 0.00019).getEntry();
+  NetworkTableEntry lol3 = TalonFXTab.add("Max Velocity", 2000).getEntry();
+  NetworkTableEntry lol4 = TalonFXTab.add("Max Acceleration", 750).getEntry();
+
+
 
 
   /** Creates a new Turret. */
   public TurretSubsystem() {
     turretCanSparkMax.getEncoder().setPosition(zeroPosition);
+    turretCanSparkMax.getPIDController().setReference(0, ControlType.kSmartMotion);
     turretCanSparkMax.getPIDController().setP(TurretSmartVelocityP, TurretVelocityPIDSlot);
     turretCanSparkMax.getPIDController().setI(TurretSmartVelocityI, TurretVelocityPIDSlot);
     turretCanSparkMax.getPIDController().setD(TurretSmartVelocityD, TurretVelocityPIDSlot);
@@ -91,8 +96,8 @@ public class TurretSubsystem extends SubsystemBase {
     turretCanSparkMax.setInverted(InvertMotor);
     turretCanSparkMax.setIdleMode(IdleMode.kBrake);
 
-    turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(SmartMotionMaxAcceleration, TurretPositionPIDSlot);
-    turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(SmartMotionMaxVelocity, TurretPositionPIDSlot);
+    //turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(SmartMotionMaxAcceleration, TurretPositionPIDSlot);
+    //turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(SmartMotionMaxVelocity, TurretPositionPIDSlot);
 
     turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(SmartVelocityMaxAcceleration, TurretVelocityPIDSlot);
     turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(SmartVelocityMaxVelocity, TurretVelocityPIDSlot);
@@ -158,15 +163,23 @@ public class TurretSubsystem extends SubsystemBase {
     //System.out.println(getPosition());
     //System.out.println(getVelocity());
     //turretCanSparkMax.getPIDController().setReference(0.1, ControlType.kDutyCycle);
-    System.out.println(" Pos: " + getPosition() + " Error:" + (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError) + "PIDError" + (getPosition()-turretShoot.target));
+    System.out.println(" Pos: " + getPosition() + " Error:" + (double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError) + "PIDError" + (getPosition()-turretShoot.target) + " Target:" + turretShoot.target + " Error:" + (turretShoot.target - getPosition()));
     double PValue = ShuffleBoardData.getDouble(0.0001);
     double IValue = lol1.getDouble(0.00000);
     double DValue = lol2.getDouble(0);
+    double MaxVelocity = lol3.getDouble(2000);
+    double MaxAcceleration = lol4.getDouble(750);
     turretCanSparkMax.getPIDController().setP(PValue, TurretPositionPIDSlot);
     turretCanSparkMax.getPIDController().setI(IValue, TurretPositionPIDSlot);
     turretCanSparkMax.getPIDController().setD(DValue, TurretPositionPIDSlot);
+    turretCanSparkMax.getPIDController().setSmartMotionMaxVelocity(MaxVelocity, TurretPositionPIDSlot);
+    turretCanSparkMax.getPIDController().setSmartMotionMaxAccel(MaxAcceleration, TurretPositionPIDSlot);
     positionTurret.setDouble(getPosition());
-    Constants.wantedPositionTurret.setDouble(driverControl.posDriverControl);
+    Constants.wantedPositionTurret.setDouble(turretShoot.target);
+    Constants.pidError.setDouble((getPosition()-turretShoot.target));
+    Constants.degrees.setDouble((double)Constants.visionTable.getEntry("Degree").getNumber(Constants.defaultVisionTurretError));
+    //public static NetworkTableEntry wantedPositionTurret = TalonFXTab.add("Wanted Position", 0).getEntry();
+
     //P is 0.00001: Doesn't move
     //P is 0.0001:Moves but oscilates
     //P is 0.00002: Moves 
@@ -177,5 +190,7 @@ public class TurretSubsystem extends SubsystemBase {
     //p 0.0000341 works
     //P is 0.0001 works well. May need more increase
     //P is 0.0000341 and D is 0.00019
+    //P is 0.00001 and D is 0.0002: Error was around 50. Max Velocity was 5000, Max Acceleration is 30,000 with a few degrees error. There is also less oscilating and the turret itself isn't affected.
+    
   }
 }
